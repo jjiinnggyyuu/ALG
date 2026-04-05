@@ -1,0 +1,20 @@
+model:
+  path: "Lightricks/LTX-Video"
+  dtype: "bfloat16"
+
+generation:
+  height: 480
+  width: 704
+  num_frames: 49
+  num_inference_steps: 40
+  guidance_scale: 5.0
+  guidance_rescale: 0.7
+  decode_timestep: 0.05
+  decode_noise_scale: 0.025
+  negative_prompt: "worst quality, inconsistent motion, blurry, jittery, distorted"
+
+alg:
+  use_low_pass_guidance: False
+
+video:
+  fps: 25

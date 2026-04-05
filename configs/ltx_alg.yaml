@@ -1,0 +1,29 @@
+model:
+  path: "Lightricks/LTX-Video"
+  dtype: "bfloat16"
+
+generation:
+  height: 480
+  width: 704
+  num_frames: 49
+  num_inference_steps: 50
+  guidance_scale: 5
+
+alg:
+  use_low_pass_guidance: True
+  lp_filter_type: "down_up"
+  lp_filter_in_latent: True
+  lp_resize_factor: 0.5
+  lp_blur_sigma: 1.0
+  lp_blur_kernel_size: 0.05
+  lp_strength_schedule_type: "interval"
+  schedule_interval_start_time: 0.0
+  schedule_interval_end_time: 0.05
+  schedule_linear_start_weight: 1.0
+  schedule_linear_end_weight: 0.0
+  schedule_linear_end_time: 0.5
+  schedule_exp_decay_rate: 5.0
+  schedule_blur_kernel_size: False
+
+video:
+  fps: 25

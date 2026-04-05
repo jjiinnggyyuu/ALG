@@ -15,6 +15,7 @@ from transformers import CLIPVisionModel
 from pipeline_wan_image2video_lowpass import WanImageToVideoPipeline
 from pipeline_cogvideox_image2video_lowpass import CogVideoXImageToVideoPipeline
 from pipeline_hunyuan_video_image2video_lowpass import HunyuanVideoImageToVideoPipeline
+from pipeline_ltx_image2video_lowpass import LTXImageToVideoPipeline
 
 from lp_utils import get_hunyuan_video_size
 
@@ -67,6 +68,16 @@ def main(args):
             torch_dtype=model_dtype,
             cache_dir=MODEL_CACHE_DIR
         )
+        pipe.enable_sequential_cpu_offload()
+
+    elif "LTX" in model_path:
+        pipe = LTXImageToVideoPipeline.from_pretrained(
+            model_path,
+            torch_dtype=model_dtype,
+            cache_dir=MODEL_CACHE_DIR
+        )
+        pipe.enable_model_cpu_offload()
+        
     elif "HunyuanVideo" in model_path:
         transformer = HunyuanVideoTransformer3DModel.from_pretrained(
             model_path,
@@ -84,8 +95,10 @@ def main(args):
             flow_shift= config['model']['flow_shift'],
             invert_sigmas = config['model']['flow_reverse']
         )
-    pipe.to(device)
 
+    if "CogVideoX" not in model_path and "LTX" not in model_path:
+        pipe.to(device)
+        
     logger.info("Pipeline loaded successfully.")
 
     # 3. Prepare inputs
