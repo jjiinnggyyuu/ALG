@@ -36,21 +36,21 @@ python run.py \
 
 ### LTX-Video Conditioning Mechanism
 ```
-conditioning_mask = [1, 0, 0, 0, ...]  ← 첫 프레임만 1
-timestep = t * (1 - conditioning_mask) ← 첫 프레임 timestep=0
-→ DiT가 첫 프레임을 "완성된 프레임"으로 인식
-→ 이미지 그대로 유지
+conditioning_mask = [1, 0, 0, 0, ...]  # Only first frame is 1
+timestep = t * (1 - conditioning_mask) # First frame timestep=0
+→ DiT treats first frame as "already completed"
+→ First frame remains unchanged (image preserved)
 ```
 
 ### ALG Application
 ```
 Early steps (t < t_trans):
   first_frame = low_pass_filter(image_latent)
-  → shortcut 방지, 동적 움직임 생성
+  → Prevents shortcut effect, allows dynamic motion
 
 Later steps (t >= t_trans):
   first_frame = original image_latent
-  → 이미지 디테일 복원
+  → Restores high-frequency details for image fidelity
 ```
 
 ## Tested Environment
